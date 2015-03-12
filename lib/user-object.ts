@@ -1,5 +1,7 @@
 ///<reference path="./node.d.ts" />
 import crypto=require('crypto');
+import extend=require('extend');
+import deepFreeze=require('deep-freeze-strict');
 // user object
 
 export class User{
@@ -23,7 +25,7 @@ export class User{
 
 
     public getData():any{
-        return this.data==null ? this.data : Object.create(this.data);
+        return this.data;
     }
 
     public setData(data:any,password?:string,version?:number):void{
@@ -51,7 +53,7 @@ export class User{
             this.password=h2(this.salt,password);
         }
         //replace data
-        this.data=data;
+        this.data=deepFreeze(extend(true,{},data));
     }
     //authenticate
     public auth(password:string):boolean{

@@ -130,3 +130,11 @@ declare module "crypto"{
     }
 }
 
+declare module "extend"{
+    function extend(...args:Array<any>):any;
+    export = extend;
+}
+declare module "deep-freeze-strict"{
+    function deepFreeze(obj:any):any;
+    export = deepFreeze;
+}

@@ -22,5 +22,9 @@
   "devDependencies": {
     "coffee-script": "^1.9.1",
     "mocha": "^2.1.0"
+  },
+  "dependencies": {
+    "deep-freeze-strict": "^1.1.1",
+    "extend": "^2.0.0"
   }
 }
