@@ -1,0 +1,26 @@
+{
+  "name": "my-user",
+  "version": "0.0.1",
+  "description": "My user management system for me.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uhyo/my-user.git"
+  },
+  "keywords": [
+    "user"
+  ],
+  "author": "uhyo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uhyo/my-user/issues"
+  },
+  "homepage": "https://github.com/uhyo/my-user",
+  "devDependencies": {
+    "coffee-script": "^1.9.1",
+    "mocha": "^2.1.0"
+  }
+}
