@@ -143,7 +143,7 @@ export class UserConfig{
         this.setPasswordHash(0,"sha256");
     }
     //create user
-    public create(id:string):User{
+    public create(id?:string):User{
         if(id!=null && "string"!==typeof id){
             throw new Error("Invalid user id.");
         }
