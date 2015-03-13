@@ -7,7 +7,8 @@ import deepFreeze=require('deep-freeze-strict');
 export class User{
     //configure
     private config:UserConfig;
-    constructor(config:UserConfig){
+    constructor(id:string,config:UserConfig){
+        this.id=id || null;
         this.config=config;
     }
     //ID
@@ -55,6 +56,33 @@ export class User{
         //replace data
         this.data=deepFreeze(extend(true,{},data));
     }
+    //load raw data
+    public loadRawData(d:{
+        id?:string;
+        version?:number;
+        salt?:string;
+        password?:string;
+        data?:any;
+    }):void{
+        if(d.id!=null){
+            this.id=d.id;
+        }
+        if(d.version!=null){
+            this.version=d.version;
+        }
+        if(d.salt!=null){
+            this.salt=d.salt;
+        }
+        if(d.password!=null){
+            this.password=d.password;
+        }
+        if(d.data!=null){
+            this.data=d.data;
+        }
+    }
+
+
+
     //authenticate
     public auth(password:string):boolean{
         var h=this.config.getPasswordHash(this.version);
@@ -115,8 +143,11 @@ export class UserConfig{
         this.setPasswordHash(0,"sha256");
     }
     //create user
-    public create():User{
-        return new User(this);
+    public create(id:string):User{
+        if(id!=null && "string"!==typeof id){
+            throw new Error("Invalid user id.");
+        }
+        return new User(id,this);
     }
 
     //user config setting

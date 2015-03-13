@@ -8,13 +8,18 @@ describe 'User object',->
         beforeEach ->
             config=new user_object.UserConfig()
 
+        it 'user id',->
+            user=config.create "id"
+
+            assert.strictEqual user.id,"id"
+
         it 'default user version',->
-            user=config.create()
+            user=config.create "id"
             user.setData {},"password"
             assert.strictEqual user.version,0
 
         it 'default authenticats',->
-            user=config.create()
+            user=config.create "id"
             user.setData {},"password"
 
             assert.strictEqual user.auth("foobar"),false,"wrong password"
@@ -22,14 +27,14 @@ describe 'User object',->
 
         it 'user versioning',->
             config.setSalt 1,16
-            user=config.create()
+            user=config.create "id"
             user.setData {},"foo"
 
             assert.strictEqual user.version,1
 
             #version up
             config.setPasswordHash 2,"md5"
-            user2=config.create()
+            user2=config.create "id2"
             user2.setData {},"bar"
 
             assert.strictEqual user2.version,2
@@ -48,7 +53,7 @@ describe 'User object',->
             config.setSalt 1,->
                 # static salt
                 "foobar"
-            user=config.create()
+            user=config.create "id"
 
             user.setData {},"password"
 
@@ -68,7 +73,7 @@ describe 'User object',->
 
             config.setPasswordHash 1,(salt,password)->
                 salt+password
-            user=config.create()
+            user=config.create "id"
 
             user.setData {},"password"
 
@@ -80,7 +85,7 @@ describe 'User object',->
             config.setPasswordHash 1,(salt,password)->
                 salt+password
 
-            user=config.create()
+            user=config.create "id"
             user.setData {},"foo"
 
             assert.strictEqual user.password,"saltfoo"
@@ -105,7 +110,7 @@ describe 'User object',->
             config.setPasswordHash 1,(salt,password)->
                 salt+password
             
-            user=config.create()
+            user=config.create "id"
             user.setData {},"foo"
 
             config.setPasswordHash 2,(salt,password)->
@@ -122,7 +127,7 @@ describe 'User object',->
             config=new user_object.UserConfig()
 
         it 'save & store data',->
-            user=config.create()
+            user=config.create "id"
 
             data=
                 foo: "bar"
@@ -134,14 +139,14 @@ describe 'User object',->
                 baz: -500
             }
         it 'data is frozen',->
-            user=config.create()
+            user=config.create "id"
 
             user.setData {},"password"
 
             assert Object.isFrozen user.getData()
             
         it 'clones data',->
-            user=config.create()
+            user=config.create "id"
 
             data=
                 foo: "bar"
@@ -162,3 +167,31 @@ describe 'User object',->
                 baz: -500
                 quux: "a"
             }
+        it 'loads data',->
+            user=config.create()
+
+            user.loadRawData {
+                id:"id"
+                data:
+                    foo: "bar"
+                    baz: -500
+            }
+
+            assert.deepEqual user.id,"id"
+            assert.deepEqual user.getData(),{
+                foo: "bar"
+                baz: -500
+            }
+        it 'load raw & authenticate',->
+            config.setPasswordHash 1,"sha256"
+            user=config.create()
+            user.loadRawData {
+                version: 1
+                salt:"salt"
+                # echo -n "saltpassword" | sha256sum
+                password:"13601bda4ea78e55a07b98866d2be6be0744e3866f13c00c811cab608a28f322"
+            }
+
+            assert user.auth "password"
+
+
