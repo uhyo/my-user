@@ -1,7 +1,7 @@
 {
   "name": "my-user",
-  "version": "0.0.1",
-  "description": "My user management system for me.",
+  "version": "0.1.0",
+  "description": "My user management objects for me.",
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register"

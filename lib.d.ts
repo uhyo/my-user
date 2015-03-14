@@ -29,7 +29,7 @@ declare module "my-user"{
         setSalt(version:number,bytes:number):void;
         setSalt(version:number,func:()=>string):void;
         getSalt(version?:number):()=>string;
-        o
+
         setPasswordHash(version:number,hashtype:string):void;
         setPasswordHash(version:number,hash:(salt:string,password:string)=>string):void;
 
