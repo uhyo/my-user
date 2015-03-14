@@ -1,12 +1,12 @@
 assert=require 'assert'
 
-user_object=require '../lib/user-object'
+my_user=require '../'
 
 describe 'User object',->
     describe 'authenticate & versioning',->
         config=null
         beforeEach ->
-            config=new user_object.UserConfig()
+            config=my_user.init()
 
         it 'user id',->
             user=config.create "id"
@@ -124,7 +124,7 @@ describe 'User object',->
     describe 'user data',->
         config=null
         beforeEach ->
-            config=new user_object.UserConfig()
+            config=my_user.init()
 
         it 'save & store data',->
             user=config.create "id"
