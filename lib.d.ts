@@ -35,4 +35,6 @@ declare module "my-user"{
 
         getPasswordHash(version?:number):(salt:string,password:string)=>string;
     }
+
+    export function init():UserConfig;
 }
