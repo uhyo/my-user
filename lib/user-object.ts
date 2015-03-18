@@ -29,14 +29,20 @@ export class User{
         return this.data;
     }
 
-    public setData(data:any,password?:string,version?:number):void{
-        if("number"!==typeof version){
-            if("number"===typeof password){
-                version=<any>password;
+    public setData(data:any,password?:string,version?:number):void;
+    public setData(data:any,version:number):void;
+    public setData(data:any,arg1?:string|number,arg2?:number):void{
+        var password:string, version:number;
+        if("number"!==typeof arg2){
+            if("number"===typeof arg1){
+                version=<number>arg1;
                 password=null;
             }else{
+                password=<string>arg1;
                 version=this.config.getLatestVersion();
             }
+        }else{
+            password=<string>arg1, version=<number>arg2;
         }
         if("object"!==typeof data || data==null){
             throw new Error("User data must be an object.");
@@ -79,6 +85,9 @@ export class User{
         if(d.data!=null){
             this.data=d.data;
         }
+    }
+    public writeData(obj:any):void{
+        this.setData(extend(true,{},this.data,obj),this.version);
     }
 
 

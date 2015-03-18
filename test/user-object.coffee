@@ -193,5 +193,40 @@ describe 'User object',->
             }
 
             assert user.auth "password"
+        it 'write data',->
+            user=config.create()
+            user.setData {
+                foo: "bar"
+                baz: 10
+            }
 
+            user.writeData {
+                hoge: "piyo"
+            }
+
+            assert.deepEqual user.getData(),{
+                foo: "bar"
+                baz: 10
+                hoge: "piyo"
+            }
+        it 'write data doesn\'t change user version',->
+            config.setSalt 1,->"salt1"
+            config.setSalt 2,->"salt2"
+            user=config.create()
+
+            user.setData {
+                foo: "bar"
+            },"password",1
+
+
+            assert.strictEqual user.version,1
+
+            user.writeData {
+                foo: "baz"
+            }
+
+            assert.deepEqual user.getData(),{
+                foo: "baz"
+            }
+            assert.strictEqual user.version,1
 
