@@ -1,6 +1,6 @@
 {
   "name": "my-user",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "My user management objects for me.",
   "main": "index.js",
   "scripts": {

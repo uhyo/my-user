@@ -1,4 +1,4 @@
-# my-user v.0.1.0
+# my-user v.0.1.1
 
 `my-user` is my simple user objects for me, supporting **authentication**.
 
@@ -128,6 +128,11 @@ Set user's extra data, optionally password, and optionally version.
 If `version` is omitted, it will be the latest.
 
 `password` is required when password hash function changes by upgrading/downgrading.
+
+### user.writeData(data)
+Partially overrides user's data by `data`.
+
+This method does not change the version of `user`.
 
 ### user.getData()
 Returns user's current extra data.

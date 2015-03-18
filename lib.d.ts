@@ -16,6 +16,7 @@ declare module "my-user"{
             password?:string;
             data?:any;
         }):void;
+        writeData(data:any):void;
 
         auth(password:string):boolean;
     }
