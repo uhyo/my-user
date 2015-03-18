@@ -38,7 +38,7 @@ export class User{
                 version=this.config.getLatestVersion();
             }
         }
-        if("object"!==typeof data){
+        if("object"!==typeof data || data==null){
             throw new Error("User data must be an object.");
         }
         //difference of password hash
