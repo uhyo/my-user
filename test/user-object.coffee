@@ -1,6 +1,6 @@
 assert=require 'assert'
 
-my_user=require '../'
+my_user=require '../dist/index'
 
 describe 'User object',->
     describe 'authenticate & versioning',->

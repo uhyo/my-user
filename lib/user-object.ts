@@ -1,66 +1,66 @@
-///<reference path="./node.d.ts" />
-import crypto=require('crypto');
-import extend=require('extend');
-import deepFreeze=require('deep-freeze-strict');
+import * as crypto from 'crypto';
+import extend = require('extend');
+import deepFreeze = require('deep-freeze-strict');
 // user object
 
 export class User{
     //configure
-    private config:UserConfig;
-    constructor(id:string,config:UserConfig){
+    private config: UserConfig;
+    constructor(id: string | null | undefined, config: UserConfig){
         this.id=id || null;
         this.config=config;
     }
     //ID
-    public id:string;
+    public id: string | null;
     //version of password
-    public version:number;
+    public version: number;
     
     //auth data
-    public salt:string;
+    public salt: string;
     //hashed
-    public password:string;
+    public password: string;
 
     //other data
-    private data:any;
+    private data: any;
 
 
-    public getData():any{
+    public getData(): any{
         return this.data;
     }
 
-    public setData(data:any,password?:string,version?:number):void;
-    public setData(data:any,version:number):void;
-    public setData(data:any,arg1?:string|number,arg2?:number):void{
-        var password:string, version:number;
-        if("number"!==typeof arg2){
-            if("number"===typeof arg1){
-                version=<number>arg1;
-                password=null;
+    public setData(data: any, password?: string, version?: number):void;
+    public setData(data: any,version: number):void;
+    public setData(data: any,arg1?: string|number,arg2?: number):void{
+        let password: string | undefined, version: number;
+        if("number" !== typeof arg2){
+            if("number" === typeof arg1){
+                version = arg1;
+                password = undefined;
             }else{
-                password=<string>arg1;
-                version=this.config.getLatestVersion();
+                password = arg1;
+                version = this.config.getLatestVersion();
             }
         }else{
-            password=<string>arg1, version=<number>arg2;
+            password = arg1 as string;
+            version = arg2;
         }
         if("object"!==typeof data || data==null){
             throw new Error("User data must be an object.");
         }
         //difference of password hash
-        var h1=this.config.getPasswordHash(this.version), h2=this.config.getPasswordHash(version);
-        if(h1!==h2 && password==null){
+        let h1 = this.config.getPasswordHash(this.version), h2 = this.config.getPasswordHash(version);
+        if(h1 !== h2 && password == null){
             throw new Error("Password is required to update user version from "+this.version+" to "+version+".");
         }
         //set version
-        this.version=version;
-        if(password!=null){
+        this.version = version;
+        if(password != null){
             //set password
-            this.salt=this.config.getSalt(version)();
-            this.password=h2(this.salt,password);
+            this.salt = this.config.getSalt(version)();
+            this.password = h2(this.salt,password);
         }
         //replace data
-        this.data=deepFreeze(extend(true,{},data));
+        this.data = deepFreeze(extend(true, {}, data));
     }
     //load raw data
     public loadRawData(d:{
@@ -94,7 +94,7 @@ export class User{
 
     //authenticate
     public auth(password:string):boolean{
-        var h=this.config.getPasswordHash(this.version);
+        const h=this.config.getPasswordHash(this.version);
         return h(this.salt,password)===this.password;
     }
 
@@ -129,8 +129,8 @@ export class UserConfig{
             this.first=version;
         }
     }
-    private get(name:string,version:number):any{
-        var d:any;
+    private get(name:string,version?: number):any{
+        let d:any;
         if(version==null){
             version=this.latest;
         }else{
@@ -153,10 +153,10 @@ export class UserConfig{
     }
     //create user
     public create(id?:string):User{
-        if(id!=null && "string"!==typeof id){
+        if(id != null && "string" !== typeof id){
             throw new Error("Invalid user id.");
         }
-        return new User(id,this);
+        return new User(id, this);
     }
 
     //user config setting
@@ -181,7 +181,7 @@ export class UserConfig{
     }
 
     public getSalt(version?:number):()=>string{
-        return this.get("saltGenerator",version);
+        return this.get("saltGenerator", version);
     }
 
     public setPasswordHash(version:number,hashtype:string):void;
@@ -211,12 +211,12 @@ export interface UserConfigData{
 //------
 function generateSaltGenerator(bytes:number):()=>string{
     return ()=>{
-        var buf=crypto.pseudoRandomBytes(bytes);
+        const buf=crypto.pseudoRandomBytes(bytes);
         return buf.toString("hex");
     };
 }
 function generatePasswordHash(hashtype:string):(salt:string,password:string)=>string{
-    var supported=crypto.getHashes();
+    const supported=crypto.getHashes();
     if(supported.indexOf(hashtype)===-1){
         throw new Error("Hashtype '"+hashtype+"' is not supported.");
     }

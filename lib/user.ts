@@ -1,8 +1,12 @@
-///<reference path="./node.d.ts" />
-import userobject=require('./user-object');
+import {
+    User,
+    UserConfig,
+} from './user-object';
 
-export import User=userobject.User;
-export import UserConfig=userobject.UserConfig;
+export {
+    User,
+    UserConfig,
+};
 
 export class Manager{
     private c:UserConfig;
@@ -11,7 +15,7 @@ export class Manager{
     }
     //user
     create():User{
-        return new User(this.c);
+        return new User(null, this.c);
     }
 
     //config

@@ -1,4 +1,4 @@
-///<reference path="./node.d.ts" />
+"use strict";
 var crypto = require('crypto');
 var extend = require('extend');
 var deepFreeze = require('deep-freeze-strict');
@@ -16,7 +16,7 @@ var User = (function () {
         if ("number" !== typeof arg2) {
             if ("number" === typeof arg1) {
                 version = arg1;
-                password = null;
+                password = undefined;
             }
             else {
                 password = arg1;
@@ -24,7 +24,8 @@ var User = (function () {
             }
         }
         else {
-            password = arg1, version = arg2;
+            password = arg1;
+            version = arg2;
         }
         if ("object" !== typeof data || data == null) {
             throw new Error("User data must be an object.");
@@ -71,7 +72,7 @@ var User = (function () {
         return h(this.salt, password) === this.password;
     };
     return User;
-})();
+}());
 exports.User = User;
 // user config
 var UserConfig = (function () {
@@ -101,6 +102,7 @@ var UserConfig = (function () {
         else {
             version = version | 0;
         }
+        //check
         while (version >= this.first) {
             d = this.data[version];
             if (d != null && d[name] != null) {
@@ -162,7 +164,7 @@ var UserConfig = (function () {
         return this.get("passwordHash", version);
     };
     return UserConfig;
-})();
+}());
 exports.UserConfig = UserConfig;
 //------
 function generateSaltGenerator(bytes) {

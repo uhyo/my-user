@@ -1,14 +1,14 @@
-///<reference path="./node.d.ts" />
-var userobject = require('./user-object');
-exports.User = userobject.User;
-exports.UserConfig = userobject.UserConfig;
+"use strict";
+var user_object_1 = require('./user-object');
+exports.User = user_object_1.User;
+exports.UserConfig = user_object_1.UserConfig;
 var Manager = (function () {
     function Manager() {
-        this.c = new exports.UserConfig();
+        this.c = new user_object_1.UserConfig();
     }
     //user
     Manager.prototype.create = function () {
-        return new exports.User(this.c);
+        return new user_object_1.User(null, this.c);
     };
     Manager.prototype.setSalt = function (version, arg) {
         this.c.setSalt(version, arg);
@@ -17,7 +17,7 @@ var Manager = (function () {
         this.c.setPasswordHash(version, arg);
     };
     return Manager;
-})();
+}());
 exports.Manager = Manager;
 function createManager() {
     return new Manager();

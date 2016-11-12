@@ -1,10 +1,13 @@
 {
   "name": "my-user",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "My user management objects for me.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register"
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "mocha --compilers coffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
@@ -20,8 +23,11 @@
   },
   "homepage": "https://github.com/uhyo/my-user",
   "devDependencies": {
+    "@types/extend": "^2.0.30",
+    "@types/node": "^6.0.46",
     "coffee-script": "^1.9.1",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "typescript": "^2.0.9"
   },
   "dependencies": {
     "deep-freeze-strict": "^1.1.1",
