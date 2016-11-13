@@ -10,11 +10,11 @@ export declare class User {
     setData(data: any, password?: string, version?: number): void;
     setData(data: any, version: number): void;
     loadRawData(d: {
-        id?: string;
-        version?: number;
-        salt?: string;
-        password?: string;
-        data?: any;
+        id?: string | null;
+        version?: number | null;
+        salt?: string | null;
+        password?: string | null;
+        data?: any | null;
     }): void;
     writeData(obj: any): void;
     auth(password: string): boolean;

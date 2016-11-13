@@ -64,11 +64,11 @@ export class User{
     }
     //load raw data
     public loadRawData(d:{
-        id?:string;
-        version?:number;
-        salt?:string;
-        password?:string;
-        data?:any;
+        id?:string | null;
+        version?:number | null;
+        salt?:string | null;
+        password?:string | null;
+        data?:any | null;
     }):void{
         if(d.id!=null){
             this.id=d.id;

@@ -1,4 +1,4 @@
-# my-user v.0.1.1
+# my-user v.0.1.3
 
 `my-user` is my simple user objects for me, supporting **authentication**.
 
@@ -9,8 +9,8 @@ User objects hold user id, authentication data, and other data.
 npm install my-user
 ```
 
-## TypeScript declaration file
-Available at `node_modules/my-user/lib.d.ts`.
+## TypeScript support
+Available. Requites TypeScript >= 2.0
 
 ## Usage
 Init `UserConfig` and create `User`:
