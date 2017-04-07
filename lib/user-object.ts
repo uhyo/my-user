@@ -3,12 +3,12 @@ import extend = require('extend');
 import deepFreeze = require('deep-freeze-strict');
 // user object
 
-export class User{
+export class User<T>{
     //configure
     private config: UserConfig;
     constructor(id: string | null | undefined, config: UserConfig){
-        this.id=id || null;
-        this.config=config;
+        this.id = id || null;
+        this.config = config;
     }
     //ID
     public id: string | null;
@@ -21,16 +21,16 @@ export class User{
     public password: string;
 
     //other data
-    private data: any;
+    private data: T;
 
 
-    public getData(): any{
+    public getData(): T{
         return this.data;
     }
 
-    public setData(data: any, password?: string, version?: number):void;
-    public setData(data: any,version: number):void;
-    public setData(data: any,arg1?: string|number,arg2?: number):void{
+    public setData(data: T, password?: string, version?: number):void;
+    public setData(data: T, version: number):void;
+    public setData(data: T, arg1?: string|number, arg2?: number):void{
         let password: string | undefined, version: number;
         if("number" !== typeof arg2){
             if("number" === typeof arg1){
@@ -63,12 +63,12 @@ export class User{
         this.data = deepFreeze(extend(true, {}, data));
     }
     //load raw data
-    public loadRawData(d:{
+    public loadRawData(d: {
         id?:string | null;
         version?:number | null;
         salt?:string | null;
         password?:string | null;
-        data?:any | null;
+        data?:T | null;
     }):void{
         if(d.id!=null){
             this.id=d.id;
@@ -152,11 +152,11 @@ export class UserConfig{
         this.setPasswordHash(0,"sha256");
     }
     //create user
-    public create(id?:string):User{
+    public create<T>(id?:string):User<T>{
         if(id != null && "string" !== typeof id){
             throw new Error("Invalid user id.");
         }
-        return new User(id, this);
+        return new User<T>(id, this);
     }
 
     //user config setting

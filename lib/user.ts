@@ -8,14 +8,14 @@ export {
     UserConfig,
 };
 
-export class Manager{
+export class Manager<T>{
     private c:UserConfig;
     constructor(){
         this.c=new UserConfig();
     }
     //user
-    create():User{
-        return new User(null, this.c);
+    create():User<T>{
+        return new User<T>(null, this.c);
     }
 
     //config
@@ -33,6 +33,6 @@ export class Manager{
 
 
 
-export function createManager():Manager{
-    return new Manager();
+export function createManager<T>():Manager<T>{
+    return new Manager<T>();
 }

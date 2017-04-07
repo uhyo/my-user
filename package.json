@@ -24,10 +24,10 @@
   "homepage": "https://github.com/uhyo/my-user",
   "devDependencies": {
     "@types/extend": "^2.0.30",
-    "@types/node": "^6.0.46",
-    "coffee-script": "^1.9.1",
-    "mocha": "^3.1.2",
-    "typescript": "^2.0.9"
+    "@types/node": "^7.0.12",
+    "coffee-script": "^1.12.4",
+    "mocha": "^3.2.0",
+    "typescript": "^2.2.2"
   },
   "dependencies": {
     "deep-freeze-strict": "^1.1.1",
