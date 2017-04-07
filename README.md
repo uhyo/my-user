@@ -1,4 +1,4 @@
-# my-user v.0.1.3
+# my-user v.0.2.0
 
 `my-user` is my simple user objects for me, supporting **authentication**.
 
@@ -78,8 +78,11 @@ console.log(user.version === 2);      //true
 
 ## APIs
 
-### init()
+### init([options])
 Returns new instance of `UserConfig`.
+
+* options.freeze (boolean): Data returned by `user.getData()` is frozen by `Object.freeze`. (default: false)
+* options.deepcopy (boolean): Data passed to `user.setData()` is deeply cloned.
 
 ### userconfig.create([userid])
 Returns new instance of `User`.
