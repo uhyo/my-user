@@ -131,14 +131,46 @@ describe 'User object',->
 
             data=
                 foo: "bar"
-                baz: -500
+                baz:
+                    a: -500
+                    piyo: '吉野家'
             user.setData data,"password"
 
             assert.deepEqual user.getData(),{
-                foo: "bar",
-                baz: -500
+                foo: "bar"
+                baz:
+                    a: -500
+                    piyo: '吉野家'
             }
+        it 'data is not copied by default', ->
+            user=config.create "id"
+            data=
+                foo: "bar"
+            user.setData data, "password"
+
+            assert data == user.getData()
+        it 'data is not frozen by default', ->
+            user=config.create "id"
+            data=
+                foo: "bar"
+            user.setData data, "password"
+
+            assert not Object.isFrozen user.getData()
+
+        it 'data deepcopy option', ->
+            config = my_user.init {deepcopy: true}
+            user=config.create "id"
+            data=
+                foo: "bar"
+                baz:
+                    piyo: '吉野家'
+            user.setData data, "password"
+
+            assert data != user.getData()
+            assert data.baz != user.getData().bax
+
         it 'data is frozen',->
+            config = my_user.init {freeze:true}
             user=config.create "id"
 
             user.setData {},"password"
@@ -146,6 +178,7 @@ describe 'User object',->
             assert Object.isFrozen user.getData()
             
         it 'clones data',->
+            config = my_user.init {deepcopy:true}
             user=config.create "id"
 
             data=

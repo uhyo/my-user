@@ -60,7 +60,14 @@ export class User<T>{
             this.password = h2(this.salt,password);
         }
         //replace data
-        this.data = deepFreeze(extend(true, {}, data));
+        let d = data;
+        if (this.config.deepcopy){
+            d = extend(true, {}, data);
+        }
+        if (this.config.freeze){
+            d = deepFreeze(d);
+        }
+        this.data = d;
     }
     //load raw data
     public loadRawData(d: {
@@ -86,8 +93,8 @@ export class User<T>{
             this.data=d.data;
         }
     }
-    public writeData(obj:any):void{
-        this.setData(extend(true,{},this.data,obj),this.version);
+    public writeData(obj: Partial<T>):void{
+        this.setData(extend(true,{},this.data,obj as any),this.version);
     }
 
 
@@ -100,23 +107,41 @@ export class User<T>{
 
 }
 
+export interface UserConfigOptions{
+    // Dataをfreezeするかどうか
+    freeze: boolean;
+    // Dataをdeep copyするかどうか
+    deepcopy: boolean;
+}
+
+
 // user config
 export class UserConfig{
     //latest version
     private latest:number;
     private first:number;
 
-    constructor(){
+    public readonly freeze: boolean;
+    public readonly deepcopy: boolean;
+
+    constructor(options?: Partial<UserConfigOptions>){
         this.latest=-Infinity;
         this.first=Infinity;
         this.data={};
+
+        // read options
+        if (options == null){
+            options = {};
+        }
+        this.freeze = options.freeze != null ? options.freeze : false;
+        this.deepcopy = options.deepcopy != null ? options.deepcopy : false;
 
         //default user data
         this.defaults();
     }
 
     private data:{
-        [version:number]:UserConfigData;
+        [version:number]: Partial<UserConfigData>;
     };
     private initd(version:number):void{
         if(this.data[version]==null){
@@ -129,22 +154,23 @@ export class UserConfig{
             this.first=version;
         }
     }
-    private get(name:string,version?: number):any{
-        let d:any;
+    private get<D extends keyof UserConfigData>(name: D,version?: number): UserConfigData[D]{
         if(version==null){
-            version=this.latest;
+            version = this.latest;
         }else{
-            version=version|0;
+            version = version|0;
         }
         //check
         while(version>=this.first){
-            d=this.data[version];
-            if(d!=null && d[name]!=null){
-                return d[name];
+            const d = this.data[version];
+            const n: UserConfigData[D] | undefined = d[name];
+            if(d!=null && n!=null){
+                return n;
             }
             version--;
         }
-        return null;
+        // no default data?????
+        throw new Error('Could not find any data');
     }
     private defaults():void{
         //default user version
@@ -203,8 +229,8 @@ export class UserConfig{
     }
 }
 export interface UserConfigData{
-    saltGenerator?():string;
-    passwordHash?(salt:string,password:string):string;
+    saltGenerator():string;
+    passwordHash(salt:string,password:string):string;
 }
 
 

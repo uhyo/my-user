@@ -1,17 +1,19 @@
 import {
     User,
     UserConfig,
+    UserConfigOptions,
 } from './user-object';
 
 export {
     User,
     UserConfig,
+    UserConfigOptions,
 };
 
 export class Manager<T>{
     private c:UserConfig;
-    constructor(){
-        this.c=new UserConfig();
+    constructor(options?: Partial<UserConfigOptions>){
+        this.c=new UserConfig(options);
     }
     //user
     create():User<T>{
@@ -33,6 +35,6 @@ export class Manager<T>{
 
 
 
-export function createManager<T>():Manager<T>{
-    return new Manager<T>();
+export function createManager<T>(options?: Partial<UserConfigOptions>):Manager<T>{
+    return new Manager<T>(options);
 }
